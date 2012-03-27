@@ -1,0 +1,9 @@
+Started this the weekend.
+
+So far: http://dl.dropbox.com/u/45416451/roamy.ogv
+
+Will need to add col. check for the "objects" that will be picked up by the character. (world.py)
+
+This is a basic project for extending knowledge around collisions and physics.
+
+Note: Ralph model belongs to Panda3d. (sample)
