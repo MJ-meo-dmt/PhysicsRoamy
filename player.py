@@ -1,4 +1,4 @@
-import sys, os, math, random
+import sys, os, math, random, time
 from panda3d.core import *
 from pandac.PandaModules import *
 from direct.actor.Actor import Actor
@@ -7,11 +7,13 @@ from panda3d.core import CollisionTraverser,CollisionNode
 from panda3d.core import CollisionHandlerQueue,CollisionRay
 from direct.showbase.DirectObject import DirectObject
 from colHandler import *
+from world import *
 # The basic player class.
 
 # GLOBAL for holding active players, bots and other actors.
 ACTIVE_ACTORS = {}
 
+worldIns = World()
 
 class Player(DirectObject):
 	"""
@@ -201,8 +203,8 @@ class PlayerInput(DirectObject):
 		self.actorGroundRay.setDirection(0,0,-1)
 		self.actorGroundCol = CollisionNode('actorRay')
 		self.actorGroundCol.addSolid(self.actorGroundRay)
-		self.actorGroundCol.setFromCollideMask(BitMask32.bit(0x2))
-		self.actorGroundCol.setIntoCollideMask(BitMask32.bit(0x3))
+		self.actorGroundCol.setFromCollideMask(BitMask32.bit(0))
+		self.actorGroundCol.setIntoCollideMask(BitMask32.allOff())
 		self.actorGroundColNp = self.activePlayer.attachNewNode(self.actorGroundCol)
 		self.actorGroundHandler = CollisionHandlerQueue()
 		cTrav.addCollider(self.actorGroundColNp, self.actorGroundHandler)
@@ -250,7 +252,7 @@ class PlayerInput(DirectObject):
 			self.activePlayer.setX(self.activePlayer, -self.activePlayerSpeed * globalClock.getDt())
 			
 		if (self.controlMap["jump"] != 0):
-			self.activePlayer.setZ(10)
+			print "Jump now...!?"
 		
 		# Check for zooming and Do.
 		if (self.controlMap["wheel-in"] != 0):
@@ -334,6 +336,16 @@ class PlayerInput(DirectObject):
 			self.activePlayer.setZ(entries[0].getSurfacePoint(render).getZ())
 		else:
 			self.activePlayer.setPos(self.actorPos)
+		
+		# Go through the BALL_DICT which is not a list and needs a new name :P 
+		# And find the ball being colided with. and then del. it
+		for ball in BALL_LIST:
+			if (len(entries)>0) and (entries[0].getIntoNode().getName() == str(ball)):
+				print "Collide with ", entries[0].getIntoNode().getName()
+				del BALL_LIST[ball]
+				BALL_LIST[ball] = None
+
+
 
 		# Keep the camera at one foot above the terrain,
 		# or two feet above ralph, whichever is greater.

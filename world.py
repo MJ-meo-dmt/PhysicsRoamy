@@ -8,6 +8,8 @@ from direct.showbase.DirectObject import DirectObject
 
 # Global Dict. for holding levels.
 ACTIVE_LEVEL = {}
+BALL_LIST = {}
+
 
 class World(DirectObject):
 	
@@ -25,6 +27,7 @@ class World(DirectObject):
 		ACTIVE_LEVEL[levelId] = levelObject
 		print "Level "+ str(levelId)+ " Created"
 
+
 # Create a level
 class Level(DirectObject):
 	
@@ -41,40 +44,27 @@ class Level(DirectObject):
 		self.np.reparentTo(render)
 		self.np.setPos(0, 0, 0)
 		
-		self.obj1 = Ball()
-		taskMgr.add(self.levelColCheck, "ballColCheck")
+		for i in range(5):
+			ball = Ball(str(i))
+			print i
+			
+			BALL_LIST[i] = ball
+			BALL_LIST[i].object1.setPos(i, i, .5)
+		print BALL_LIST
 		
-		self.obj1ballHandler = CollisionHandlerQueue()
-		cTrav.addCollider(self.obj1.ballColNp, self.obj1ballHandler)
-		base.messenger.toggleVerbose()
+		#base.messenger.toggleVerbose()
 		### This is for testing. 
 		self.levelTexture = loader.loadTexture("assets/levels/grass_d.png")
 		self.levelTexture.WMRepeat
 		self.np.setTexture(self.levelTexture)
 		###
 	
-	def levelColCheck(self, task):
 
-		#entry = self.obj1.ballHandler.getEntry()
-		#if (entry.getIntoNode().getName() == "ground"):
-		#	print "IT happend"
-		
-		for i in range(self.obj1ballHandler.getNumEntries()):
-			entry = self.obj1ballHandler.getEntry(i)
-			x = entry.getFrom()
-			print entry, x
-			
-		#if (entries[1].getIntoNode() == 'actorRay'):
-			#print "Now lets do stuff.."
-		
-	
-		return task.cont
-
-
-	
 class Ball():
 	
-	def __init__(self):
+	def __init__(self, name):
+		
+		self.colName = name
 		
 		self.object1 = loader.loadModel("assets/models/collect_ball")
 		self.object1.reparentTo(render)
@@ -82,11 +72,16 @@ class Ball():
 		
 		
 		self.ballSphere = CollisionSphere(0, 0, 0, .2)
-		self.ballCol = CollisionNode('Ball')
+		self.ballCol = CollisionNode(self.colName)
 		self.ballCol.addSolid(self.ballSphere)
 		#self.ballCol.setFromCollideMask(BitMask32.bit(0x2))
-		self.ballCol.setIntoCollideMask(BitMask32.bit(0x2))
+		#self.ballCol.setIntoCollideMask(BitMask32.bit(0x2))
 		self.ballColNp = self.object1.attachNewNode(self.ballCol)
+		
+	def __del__(self):
+		
+		self.object1.removeNode()
+		self.ballColNp.removeNode()
 		
 
 

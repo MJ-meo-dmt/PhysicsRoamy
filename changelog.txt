@@ -1,0 +1,31 @@
+Changelog for [Roamy]
+
+//------------------------------------------------------------//
+Version:	0.0.0
+Author:		Martin [MJ-meo-dmt]
+Date:		03/29/12
+
+- Started the project on 03/23/12, so alot changed since then.
+- the game is at a more basic stage now, in means actually kinda play able
+- which means I'll start a changlog from here on forward.
+//------------------------------------------------------------//
+
+
+game.py
+
+-  Contains the main execute and calls to other classes.
+
+world.py
+
+- Added a world class which handles [level] adding and removing from the 'global' level dict.
+- Also it will hold the 'to come' Physics world.
+
+player.py
+
+- A player class that handles the players, also adds them to the 'global' players dict.
+- A makeActor class which handles the making of player[actors].
+- A playerInput class which handles all player related movements, and collisions
+
+colHandler.py
+
+- Keeps hold of the 'CollisionTraverser'

@@ -1,7 +1,7 @@
 
-#		2D -.-
+#		3D -.-
 
-#  create a very small and simple rpg game (2d)
+#  create a very small and simple game
 #
 #
 
@@ -67,10 +67,9 @@ class Main(ShowBase):
 							  style=1, fg=(1,1,0,1),
 							  pos=(0.8,-0.95), scale = .07)
 		self.escapeText =   genLabelText("ESC: Quit", 0)
-		self.leftkeyText =  genLabelText("[Left Arrow]: Turn Left (CCW)", 1)
-		self.rightkeyText = genLabelText("[Right Arrow]: Turn Right (CW)", 2)
-		self.upkeyText =	genLabelText("[Up Arrow]: Accelerate", 3)
-		# This should change to Mousebutton.(1)
+		self.leftkeyText =  genLabelText("[Left Arrow]: Turn Left", 1)
+		self.rightkeyText = genLabelText("[Right Arrow]: Turn Right", 2)
+		self.upkeyText =	genLabelText("[Up Arrow]: Move Forward", 3)
 		self.spacekeyText = genLabelText("[Space Bar]: Jump", 4)
 		
 		#------>
@@ -87,18 +86,12 @@ class Main(ShowBase):
 		stage1 = Level("Stage 1", "assets/levels/stage1")
 		w.addLevel(1, stage1)
 		
-		
 		p=Player()
 		self.player = MakeActor('Player')
 		p.addActor('Player', self.player)
 		print "2nd Active print ", ACTIVE_ACTORS
 		self.pInput=PlayerInput()
-		
-		
-		
-	def host_game(self,params):
-		#pid = Popen(["python", "server_inst.py", params]).pid
-		pass
+		base.render.ls()
 		
 	def quit(self):
 		sys.exit()
